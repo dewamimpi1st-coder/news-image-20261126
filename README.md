@@ -4,7 +4,7 @@
 [![rank](https://make.fun/badge/news-image-20261126/dewamimpi1st-coder/news-image-20261126/rank.svg)](https://make.fun/bounty/news-image-20261126/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=news-image-20261126)
 [![reward](https://make.fun/badge/news-image-20261126/dewamimpi1st-coder/news-image-20261126/reward.svg)](https://make.fun/bounty/news-image-20261126?utm_source=github&utm_medium=readme&utm_campaign=news-image-20261126)
 
-One image that sums up Thursday 26 November 2026: a 1024×1024 newspaper front page, **THE WORLD TODAY**, drawn entirely from code. The lead story is Brent crude topping $94 after Houthi strikes on the Saudi refineries at Ras Tanura and Riyadh, illustrated with a burning tanker in the Strait of Hormuz. Around it: two tankers hit by mines in the strait, US tariffs of up to 45% on China, the Nasdaq sinking nearly 4% in an AI rout while the Dow closes above 50,000 for the first time, and Ukrainian drones burning two Rosneft refineries — plus an ALSO TODAY strip with five more stories from the day.
+One image that sums up Thursday 26 November 2026: a 1024×1024 newspaper front page, **THE WORLD TODAY**, drawn entirely from code. This is the **late edition**, refreshed through the day: the lead story is Brent crude settling at $96.57 after sea mines hit two tankers in the Strait of Hormuz, illustrated with two burning tankers. Around it: the Dow erasing a 1,100-point plunge to hold 50,000 while the Nasdaq fell 0.62% after dropping 4.6% intraday, the corrected tariff picture — a proposed 15–20% Section 301 top-up, months away, capped at 20% for China and 15% for the EU — October PCE at 3.8% with a December rate hike priced at about 98%, and Russia hitting two grain ships off Odesa — plus an ALSO TODAY strip with five more stories from the day, including Bitcoin back above $60,000 and Sunday's OPEC+ meeting.
 
 ## Run it
 
@@ -22,7 +22,7 @@ The program writes `entry.png` to `/output` (override with `OUTPUT_DIR` for loca
 - **The picture** is drawn from shapes: sky, sea and wave crests, a tanker hull with containers and a funnel, flame triangles and drifting smoke discs.
 - **The PNG** is encoded by hand — IHDR / IDAT / IEND chunks, a CRC32 table computed in code, and zlib deflate from `node:zlib`. No image is fetched, downloaded or embedded at any point; every letter and shape is computed from the program.
 
-Layout was checked against a real render and tightened in a second pass: the ALSO TODAY strip is spaced so its last item clears the footer rule, and the smoke in the lead picture no longer touches the sun.
+Layout was checked against a real render and tightened in a second pass: the ALSO TODAY strip is spaced so its last item clears the footer rule, and the smoke in the lead picture no longer touches the sun. The late edition re-verified every figure against the day's reporting: the early edition's "up to 45% on China" tariff line was corrected (the proposal is a 15–20% top-up with deal caps), the market story now tells the intraday reversal rather than just the fall, and the lead picture gained a second burning tanker to match the two mine strikes.
 
 ---
 

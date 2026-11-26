@@ -1,9 +1,17 @@
-// THE WORLD TODAY — Thursday, 26 November 2026
+// THE WORLD TODAY — Thursday, 26 November 2026, LATE EDITION
 // A program that draws a newspaper front page summing up the day's world
 // news, using nothing but the Node standard library. No network access, no
 // downloaded images: every pixel is computed here — the masthead, the text
-// (from a hand-built 5x7 bitmap font), the lead illustration of a burning
-// tanker, and the PNG bytes themselves (hand-rolled encoder + zlib).
+// (from a hand-built 5x7 bitmap font), the lead illustration of burning
+// tankers in the Strait of Hormuz, and the PNG bytes themselves (a
+// hand-rolled encoder on top of zlib).
+//
+// This is the refreshed late edition. The early edition was built at dawn
+// from the previous night's news; this one folds in what happened through
+// the day: Brent settling at $96.57, the Wall Street reversal that saved
+// 50,000, the corrected tariff picture (a 15-20% top-up, months away, not
+// 45%), October PCE at 3.8% with a December hike near certain, and the
+// overnight strikes on grain ships off Odesa.
 //
 // Usage: node main.ts            (writes /output/entry.png)
 //        OUTPUT_DIR=/tmp/out node main.ts   (local testing)
@@ -303,11 +311,11 @@ function encodePNG(): Buffer {
 }
 
 // ---------------------------------------------------------------------------
-// The front page.
+// The front page — late edition.
 // ---------------------------------------------------------------------------
 
 function drawLeadIllustration(x: number, y: number, w: number, h: number): void {
-  // Sky, sea, and a burning tanker in the Strait of Hormuz.
+  // Sky, sea, and two burning tankers in the Strait of Hormuz.
   rect(x, y, w, h, SKY);
   disc(x + w - 52, y + 34, 22, EMBER); // low sun, hazy
   rect(x, y + Math.floor(h * 0.62), w, h - Math.floor(h * 0.62), SEA);
@@ -317,24 +325,33 @@ function drawLeadIllustration(x: number, y: number, w: number, h: number): void 
     const wy = y + h - 26 - (i % 2) * 10;
     hline(wx, wy, 44, WHITE, 3);
   }
-  // Tanker hull and deck.
+  // First tanker: hull, deck, containers, funnel.
   const hullY = y + Math.floor(h * 0.5);
   rect(x + 28, hullY, w - 56, 34, HULL);
   rect(x + 28, hullY, w - 56, 4, RED);
-  // Containers and funnel.
   rect(x + 52, hullY - 26, 60, 26, GREY);
   rect(x + 126, hullY - 20, 44, 20, WHITE);
   rect(x + 182, hullY - 30, 26, 30, INK);
   rect(x + 182, hullY - 30, 26, 6, RED);
   rect(x + 236, hullY - 16, 96, 16, GREY);
-  // Flames licking up from the deck.
+  // Flames licking up from the first deck.
   triangle(x + 250, hullY, x + 268, hullY - 58, x + 288, hullY, FLAME);
   triangle(x + 292, hullY, x + 306, hullY - 44, x + 322, hullY, EMBER);
   triangle(x + 222, hullY, x + 234, hullY - 34, x + 248, hullY, EMBER);
-  // Smoke drifting up and away.
+  // Smoke drifting up and away from the first fire.
   disc(x + 268, hullY - 72, 14, SMOKE);
   disc(x + 288, hullY - 92, 18, SMOKE);
   disc(x + 298, hullY - 108, 13, SMOKE);
+  // Second tanker, smaller and further off, also burning.
+  const hull2Y = y + Math.floor(h * 0.72);
+  rect(x + 224, hull2Y, 140, 20, HULL);
+  rect(x + 224, hull2Y, 140, 3, RED);
+  rect(x + 244, hull2Y - 14, 34, 14, GREY);
+  rect(x + 296, hull2Y - 18, 16, 18, INK);
+  triangle(x + 308, hull2Y, x + 320, hull2Y - 34, x + 334, hull2Y, FLAME);
+  triangle(x + 282, hull2Y, x + 290, hull2Y - 22, x + 300, hull2Y, EMBER);
+  disc(x + 320, hull2Y - 44, 9, SMOKE);
+  disc(x + 330, hull2Y - 56, 12, SMOKE);
   // Caption bar under the picture.
   rect(x, y + h - 2, w, 2, INK);
 }
@@ -366,7 +383,7 @@ function buildPage(): void {
   drawText(W / 2, 52, "THE WORLD TODAY", 6, INK, "center");
   hline(M, 108, CW, INK, 3);
   hline(M, 114, CW, INK, 1);
-  drawText(W / 2, 126, "THURSDAY, 26 NOVEMBER 2026  •  ONE DAY, ONE PAGE", 2, INK, "center");
+  drawText(W / 2, 126, "THURSDAY, 26 NOVEMBER 2026  •  LATE EDITION — ONE DAY, ONE PAGE", 2, INK, "center");
   hline(M, 152, CW, INK, 1);
 
   // Lead story: illustration left, headline + body right.
@@ -374,16 +391,16 @@ function buildPage(): void {
   const illW = 392;
   const illH = 252;
   drawLeadIllustration(M, leadY, illW, illH);
-  drawText(M, leadY + illH + 12, "PHOTO: A TANKER BURNS IN THE STRAIT OF HORMUZ", 1, GREY);
+  drawText(M, leadY + illH + 12, "PHOTO: TWO TANKERS BURN IN THE STRAIT OF HORMUZ", 1, GREY);
   const tx = M + illW + 24;
   const tw = W - M - tx;
   drawText(tx, leadY + 4, "LEAD STORY — ENERGY", 2, RED);
-  const headEnd = drawParagraph(tx, leadY + 30, tw, "BRENT TOPS $94 AS HOUTHIS HIT SAUDI REFINERY", 3, INK, 5);
+  const headEnd = drawParagraph(tx, leadY + 30, tw, "BRENT SETTLES AT $96.57 AS MINES HIT TWO TANKERS", 3, INK, 5);
   drawParagraph(
     tx,
     headEnd + 10,
     tw,
-    "Houthi forces claimed strikes on refineries at Ras Tanura and Riyadh. Brent crude jumped 3.5% to $94.61, the sharpest one-day rise in months, as traders priced in supply risk across the Gulf.",
+    "Two tankers exploded and caught fire after hitting sea mines north of Oman's Khasab port, Iran's Revolutionary Guards said. Brent settled up $1.96 at $96.57 as traders braced for Sunday's OPEC+ meeting.",
     2,
     INK,
     4,
@@ -396,27 +413,27 @@ function buildPage(): void {
   const rowH = 148;
   drawStoryCell(
     M, gridY, colW,
-    "HORMUZ",
-    "TWO TANKERS BURN IN THE STRAIT",
-    "Naval mines hit two tankers in the strait. Tehran says it downed two US drones, an MQ-9 and a Lucas, as the waterway stays open but tense.",
+    "MARKETS",
+    "DOW ERASES 1,100-POINT PLUNGE TO HOLD 50,000",
+    "Wall Street clawed back a rout before Thanksgiving. The Dow closed up 0.33% at 50,182.95; the Nasdaq fell 0.62% after dropping 4.6%. Nvidia slid 3.9%.",
   );
   drawStoryCell(
     M + colW + 40, gridY, colW,
     "TARIFFS",
-    "US EYES DUTIES UP TO 45% ON CHINA",
-    "Washington proposed new Section 301 duties on 14 trading partners, with China hit hardest at nearly 45%. Markets fear a fresh trade shock.",
+    "TARIFFS ARE A 15% TO 20% TOP-UP, MONTHS AWAY",
+    "Greer says the proposed Section 301 duties on 14 economies add only a few points, capped at 20% for China and 15% for the EU.",
   );
   drawStoryCell(
     M, gridY + rowH, colW,
-    "MARKETS",
-    "NASDAQ SINKS NEARLY 4% IN AI ROUT",
-    "The Nasdaq fell almost 4% as AI shares slid. The S&P 500 lost 2.2%, Seoul fell 6.2% and Tokyo 2.8% — yet the Dow closed above 50,000 for the first time.",
+    "INFLATION",
+    "INFLATION AT 3.8%, DECEMBER HIKE NEAR CERTAIN",
+    "October PCE rose 3.8% on the year and core PCE 3.3%, above forecast. GDP was revised up to 4.3%. Markets price a December 9 hike at about 98%.",
   );
   drawStoryCell(
     M + colW + 40, gridY + rowH, colW,
     "UKRAINE",
-    "DRONES BURN TWO ROSNEFT REFINERIES",
-    "Drones hit refineries in Samara, the 18th Russian refineries struck. Moscow's own figures put its war dead near 500,000. A Russian strike on Odesa killed 2.",
+    "RUSSIA HITS TWO GRAIN SHIPS OFF ODESA",
+    "Russia fired 113 drones and missiles overnight; a Kyiv strike hurt 7, a drone killed 2 in Kharkiv. Ukraine hit a refinery unit at Slavyansk.",
   );
 
   // Divider, then ALSO TODAY.
@@ -424,16 +441,16 @@ function buildPage(): void {
   hline(M, alsoY, CW, INK, 2);
   drawText(M, alsoY + 14, "ALSO TODAY", 2, RED);
   const items = [
+    "Bitcoin back above $60,000 after dipping to $57,300 overnight",
+    "Bangchak shuts Bangkok refinery units after a fire at its plant",
     "31 killed in a fuel-tanker pile-up on a Cairo highway",
     "Pakistan's first astronaut reaches the Tiangong station",
-    "CIA and US intelligence hit by a cyber attack",
-    "Israeli judge urges dropping the Netanyahu charges",
-    "North Korea expels a Swiss diplomat",
+    "OPEC+ meets Sunday to set 2027 output policy as the UAE exits",
   ];
   let iy = alsoY + 42;
   for (const item of items) {
     drawText(M, iy, "•  " + item, 2, INK);
-    iy += 27; // tightened from 30: the 5th item used to sit on the footer rule
+    iy += 27;
   }
 
   // Footer.

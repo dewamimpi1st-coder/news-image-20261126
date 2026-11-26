@@ -243,50 +243,51 @@ function encodePNG(): Buffer {
 
 // ---------------------------------------------------------------------------
 // Content: the day's world news, Thursday 26 November 2026.
-// Sources (all reporting the 25 Nov cycle that leads the 26 Nov papers):
-// Just Security Early Edition 25 Nov; OneTurn world brief 25 Nov; Reuters.
+// Sources (morning of 26 Nov WIB / late 25 Nov UTC, cross-checked):
+// SimpleLife.news daily brief 26 Nov; Jabulani Radio top international news;
+// EUR Radio News 26 Nov 01:17; Just Security Early Edition 25 Nov; Reuters.
 // ---------------------------------------------------------------------------
 const LEAD = {
   kicker: "MIDDLE EAST - LEAD STORY",
-  headline: "TANKERS IN FLAMES IN THE STRAIT OF HORMUZ",
+  headline: "BRENT TOPS $94 AS HOUTHIS HIT SAUDI REFINERY",
   summary:
-    "Iran's Revolutionary Guard says two oil tankers struck naval mines and caught fire in the strait, a sharp escalation of the Iran war. Brent crude jumps past $89 as Washington weighs its response.",
+    "Yemen's Houthis claim strikes on Saudi Arabia's Ras Tanura refinery and Riyadh, sending Brent crude up 3.5 percent to $94.61 as the Iran war widens.",
 };
 
 const STORIES = [
   {
     kicker: "MIDDLE EAST",
-    headline: "HOUTHIS HIT RIYADH TOWER AND SAUDI REFINERY",
+    headline: "TANKERS IN FLAMES IN THE STRAIT OF HORMUZ",
     summary:
-      "Yemen's Houthis say they struck the Ras Tanura oil refinery, a day after a drone attack on a Riyadh tower injured 11 people.",
+      "Iran says two oil tankers struck naval mines and caught fire in the strait; Tehran claims it downed two US drones overhead.",
   },
   {
     kicker: "ECONOMY",
-    headline: "US PROPOSES TARIFFS ON 14 PARTNERS",
+    headline: "US TARIFFS HIT CHINA HARDEST AT NEARLY 45%",
     summary:
-      "Washington proposes tariffs of 20 to 40 percent on 14 economies, including China, the EU and India. Markets slide on tariff and AI fears.",
+      "Washington's updated Section 301 duties hit China hardest at nearly 45 percent; 14 trading partners face tariffs of 20 to 40 percent.",
   },
   {
     kicker: "MARKETS",
-    headline: "STOCKS TUMBLE AS AI DOUBTS SPREAD",
+    headline: "NASDAQ SINKS NEARLY 4% IN AI ROUT",
     summary:
-      "The S&P 500 falls 2.2 percent and Asian shares plunge, with South Korea's KOSPI down 6.2 percent. The Dow closes above 50,000 for the first time.",
+      "US stocks fall further as AI fears intensify, the Nasdaq down almost 4 percent; the S&P 500 falls 2.2 percent and the KOSPI 6.2 percent.",
   },
   {
     kicker: "EUROPE",
-    headline: "UKRAINE DRONES HIT TWO RUSSIAN REFINERIES",
+    headline: "UKRAINE DRONES HIT 18 RUSSIAN REFINERIES",
     summary:
-      "Ukrainian drones set two Rosneft refineries ablaze in Russia's Samara region, as Russian strikes on Odesa kill two people.",
+      "Russian oil refining falls to a more than 20-year low after Ukrainian strikes on at least 18 refineries; two Rosneft plants burn in Samara.",
   },
 ];
 
 const ALSO = [
-  "HUAWEI CONVICTED IN US TRIAL OVER TRADE SECRETS",
+  "31 KILLED AS FUEL TANKER CRASHES ON CAIRO HIGHWAY",
+  "RUSSIA'S OWN FIGURES: NEARLY 500,000 WAR DEAD",
+  "CIA AND US INTELLIGENCE HIT BY CYBERATTACK",
   "PAKISTAN'S FIRST ASTRONAUT REACHES SPACE STATION",
-  "COLOMBIA: ALL HOSTAGES FREED IN CARTAGENA SIEGE",
-  "AUSTRALIA AND SOLOMON ISLANDS SIGN SECURITY TREATY",
-  "COP31 CLIMATE TALKS END WITHOUT A DEAL",
-  "SUDAN: DRONE STRIKES KILL 19 CIVILIANS",
+  "ISRAELI JUDGES URGE DROPPING NETANYAHU CHARGES",
+  "NORTH KOREA EXPELS SWISS DIPLOMAT",
 ];
 
 // ---------------------------------------------------------------------------
@@ -327,9 +328,11 @@ y += 14;
 hline(MARGIN, y, CONTENT_W, 3, INK);
 y += 16;
 
-// Grid: 2 columns x 2 rows of stories.
+// Grid: 2 columns x 2 rows of stories. ROW_H leaves headroom for a
+// 5-line summary (kicker 24 + 2-line headline 48 + gap 4 + 5 lines x 19)
+// so a long summary can never collide with the row below it.
 const COL_W = Math.floor((CONTENT_W - 32) / 2);
-const ROW_H = 168;
+const ROW_H = 176;
 for (let i = 0; i < STORIES.length; i++) {
   const col = i % 2;
   const row = Math.floor(i / 2);
@@ -367,7 +370,7 @@ hline(MARGIN, y, CONTENT_W, 1, GREY);
 y += 12;
 
 // Footer.
-drawTextCentered(W / 2, y, "26 NOVEMBER 2026 - SOURCES: REUTERS, AP, JUST SECURITY, ONETURN", 2, GREY);
+drawTextCentered(W / 2, y, "26 NOVEMBER 2026 - SOURCES: REUTERS, SIMPLELIFE, EUR RADIO, JUST SECURITY", 2, GREY);
 
 // Write the image.
 mkdirSync(OUT_DIR, { recursive: true });
